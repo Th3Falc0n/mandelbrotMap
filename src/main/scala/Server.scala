@@ -1,7 +1,7 @@
 package online.sachara.mandelbrot
 
-import cats.effect.{ ExitCode, IO, IOApp }
-import org.http4s.{ HttpRoutes, MediaType }
+import cats.effect.{ExitCode, IO, IOApp}
+import org.http4s.{HttpRoutes, MediaType, StaticFile}
 import org.http4s.blaze.server.BlazeServerBuilder
 import org.http4s.dsl.io._
 import org.http4s.headers.`Content-Type`
@@ -58,8 +58,7 @@ object Server extends IOApp {
 
   //create a function that creates a Response from index.html
   def index = {
-    val index = scala.io.Source.fromFile("index.html").mkString
-    Ok(index).map(_.withContentType(`Content-Type`(MediaType.text.html)))
+    StaticFile.fromResource[IO]("/index.html", None).getOrElseF(NotFound())
   }
 
   private val service = HttpRoutes.of[IO] {
