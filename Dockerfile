@@ -3,7 +3,7 @@ FROM lolhens/sbt-graal:21.3.0-java11 as builder
 COPY . .
 ARG CI_VERSION
 RUN sbt assembly
-RUN cp "$(find server/target/scala-* -type f -name '*.sh.bat')" /tmp/app
+RUN cp "$(find target/scala-* -type f -name '*.sh.bat')" /tmp/app
 
 FROM openjdk:17
 
